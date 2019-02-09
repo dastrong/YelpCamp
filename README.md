@@ -32,4 +32,4 @@ WEATHER_KEY=openWeatherKeyHere
 - `nodemon` or `npm start` to start server
 - Open your browser
 
-**Note:** No live version of this site currently
+**Note:** No live version of this site currently 
