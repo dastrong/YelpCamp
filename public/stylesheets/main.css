@@ -1,0 +1,475 @@
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body { 
+    margin-top: 70px; 
+    margin-bottom: 60px;
+}
+
+/*COVER PHOTO AND TITLE*/
+@media screen and (max-width: 2653px) {
+    #index-cover {
+        margin-top: 0px;
+        position: relative;
+    }
+    #index-text {
+        position: absolute;
+        top: 35px;
+        left: 175px;
+        color: black;
+        text-align: center;
+    }
+    #index-text h1 {
+        font-size: 5vw;
+        text-shadow: -1px -1px 2px #969696;
+    }
+    #index-text p {
+        font-size: 2vw;
+        text-shadow: -1px -1px 1px #969696;
+    }
+}
+
+@media screen and (max-width: 2000px) {
+    #index-text {
+        top: 30px;
+        left: 150px;
+    }
+    #index-text h1 {
+        font-size: 4.5vw;
+    }
+    #index-text p {
+        font-size: 1.75vw;
+    }
+}
+
+@media screen and (max-width: 1500px) {
+    #index-text {
+        top: 20px;
+        text-align: left;
+    }
+}
+
+@media screen and (max-width: 1025px) {
+    #index-text {
+        top: 10px;
+        left: 125px;
+    }
+    #index-text h1 {
+        font-size: 4vw;
+    }
+    #index-text p {
+        font-size: 1.5vw;
+    }
+    #addNewCampBtn {
+        font-size: 11px;
+        padding: 5px 9px;
+    }
+}
+
+@media screen and (max-width: 769px) {
+    #index-text {
+        top: 0px;
+        left: 100px;
+    }
+    #index-text h1 {
+        font-size: 3.75vw;
+    }
+    #index-text p {
+        font-size: 1.45vw;
+    }
+}
+
+@media screen and (max-width: 621px) {
+    #index-cover-photo {
+        opacity: 0.5;
+    }
+    #index-text {
+        position: absolute;
+        left: 0;
+        width: 100%;
+        margin: auto;
+        padding: 10px;
+        text-align: center;
+        text-shadow: 0.5px 0.5px #969696;
+    }
+    #index-text h1 {
+        font-size: 8vw;
+        margin: 8px 0;
+    }
+    #index-text p {
+        font-size: 3vw;
+        margin: 8px 0;
+    }
+    #addNewCampBtn {
+        margin: 8px 0;
+    }
+}
+
+#map {
+    background-color: grey;
+    width: 100%;
+    height: 400px;
+}
+
+#comment_box:nth-child(odd) {
+    background-color: #fff;
+}
+
+#comment_box {
+    padding: 7px 0;
+}
+
+#login-btn-modal, #register-btn-modal, #home-btn {
+    background-color: #f8f8f8;
+    border: none;
+    height: 50px;
+    border-radius: 0;
+    color: #777;
+    outline: 0;
+}
+
+#login-btn-modal:hover, #register-btn-modal:hover, #home-btn:hover, #logout-btn:hover {
+    background-color: #e7e7e7;
+}
+
+
+#login-btn-modal.active, #register-btn-modal.active, #home-btn.active {
+    background-color: #e7e7e7;
+    box-shadow: none;
+}
+
+#campground-search {
+    height: 50px;
+    background-color: #f8f8f8;
+    border-radius: 0;
+    outline: none;
+    border: none;
+    /*box-shadow: none;*/
+    color: #777;
+    /*width: 0px;*/
+    /*padding-left: 0;*/
+}
+
+#campground-search:hover {
+    background-color: #e7e7e7;
+}
+
+#campground-search:focus {
+    background-color: #e7e7e7;
+}
+
+.thumbnail img {
+    width: 100%;
+}
+
+.thumbnail {
+    padding: 0;
+}
+
+.thumbnail .caption-full {
+    padding: 9px;
+}
+
+.delete-form {
+    display: inline;
+}
+
+.flex-wrap {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.navbar {
+    margin-bottom: 0;
+}
+
+.glyphicon-tent {
+    vertical-align: middle;
+}
+
+.footer {
+    position: absolute;
+    bottom: 0;
+    background-color: #f5f5f5;
+    width: 100%;
+    height: 60px;
+}
+
+.footer-text {
+    margin: 20px auto;
+}
+
+.glyphicon-search {
+    color: #777;
+    line-height: 50px;
+}
+
+div.alert {
+    text-align: center;
+}
+
+.flashMsg {
+    position: relative;
+    top: 0;
+    width: 100%;
+    left: 0;
+    margin-bottom: 0;
+}
+
+#flashMsg{
+    top: 50px;
+    left: 0;
+    margin-top: -20px;
+    padding: 0;
+    width: 100%;
+}
+
+.formHeader {
+    text-align: center;
+}
+
+.formDiv {
+    width: 30%;
+    min-width: 220px;
+    margin: 25px auto;
+}
+
+.btn-facebook {
+    background-color: #4267b2;
+}
+
+.btn-google {
+    background-color: #DD4B39;
+}
+
+.btn-twitter {
+    background-color: #006dbf;
+}
+
+a.btn {
+    color: white;
+}
+
+.btn-facebook:hover, .btn-facebook:focus {
+    background-color: #527BD5; 
+    color: white;
+}
+
+.btn-google:hover, .btn-google:focus {
+    background-color: #E74B37;
+    color: white;
+}
+
+.btn-twitter:hover, .btn-twitter:focus {
+    background-color: #1DA1F2;
+    color: white;
+}
+
+.login-or {
+position: relative;
+font-size: 18px;
+color: #aaa;
+margin-top: 10px;
+        margin-bottom: 10px;
+padding-top: 10px;
+padding-bottom: 10px;
+}
+
+.span-or {
+display: block;
+position: absolute;
+left: 50%;
+top: -2px;
+margin-left: -25px;
+background-color: #fff;
+width: 50px;
+text-align: center;
+}
+
+.hr-or {
+background-color: #cdcdcd;
+height: 1px;
+margin-top: 0px !important;
+margin-bottom: 0px !important;
+}
+
+#commentsHeader {
+    position: absolute;
+}
+
+/*INDEX PAGE TWO HEADERS*/
+.indexTopHeaders {
+    text-align: center;
+    text-decoration: underline;
+    margin: 22px auto 22px;
+}
+
+.indexTopName {
+    text-align: center;
+    margin: 15px auto 0;
+}
+
+.campground-index p {
+    text-align: center;
+    margin: 15px auto;
+}
+
+.background1 {
+    opacity: 0.4;
+}
+
+.background2 /*, body */ {
+    background-color: #F3F3F3;
+}
+
+#campground-grid {
+    padding-top: 15px;
+    background-color: #F3F3F3;
+}
+
+/*MOVES RATING STARS ON TOP OF IMAGE*/
+.img-responsive {
+    position: relative;
+}
+
+.glyphicon-star, .glyphicon-star-empty {
+    left: 1px;
+}
+
+.rating-xs, #ratingBtn, .rating-stars {
+    text-align: center;
+    max-width: 210px;
+    margin: 0 auto;
+}
+
+.rating-sm {
+    position: absolute;
+    top: 0px;
+}
+
+/*PAGINATION*/
+#pagination {
+    display: flex;
+}
+
+.pagination {
+    margin: 20px auto;
+}
+
+/*WEATHER WIDGET*/
+#weatherWidget {
+    min-width: 200px;
+    display: flex;
+    flex-direction: column;
+    background-color: lightblue;
+    text-align: center;
+}
+
+#currentInfo {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+#currentInfo h1 {
+    flex-basis: 100%;
+}
+
+#currentInfo i, #currentInfo h4 {
+    flex-basis: 50%;
+}
+
+ #currentInfo h4 {
+    font-size: 35px;
+}
+
+#forecastInfo {
+    display: flex;
+}
+
+#forecastInfo p {
+    font-size: 18px;
+    margin: 0 auto;
+}
+
+.forecastDay:nth-of-type(odd) {
+    background-color: white;
+}
+
+.forecastDay {
+    flex-basis: 25%;
+    padding: 10px 0;
+}
+
+.day, .icon, .temp {
+    flex-basis: 33%;
+}
+
+i.wi {
+    line-height: inherit;
+    font-size: 40px;
+}
+
+.highTemp {
+    color: #e20000;
+}
+
+.lowTemp {
+    color: #022bf7;
+}
+
+
+@media screen and (min-width: 992px) {
+    #forecastInfo {
+        display: block;
+    }
+    
+    #forecastInfo p {
+        font-size: 18px;
+        margin: 0 auto;
+        /*width: 50%;*/
+    }
+    
+    .forecastDay:nth-of-type(odd) {
+        background-color: white;
+    }
+    
+    .forecastDay {
+        display: flex;
+        align-items: center;
+        padding: 10px 0;
+    }
+    
+    .day, .icon, .temp {
+        flex-basis: 33%;
+    }
+}
+
+.sideInfoBody {
+    padding: 0;
+    display: none;
+}
+
+.panel {
+    margin-bottom: 10px;
+    text-align: center;
+}
+.panel-footer {
+    background-color: #337ab7;
+    color: white;
+}
+
+#ratingForm {
+    padding-top: 10px;
+}
+
+@media screen and (min-width: 768px){
+    .sideInfoHeader, .sideInfoFooter {
+        display: none;
+    }
+
+    .sideInfoBody {
+        display: block;
+    }
+}

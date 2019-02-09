@@ -1,0 +1,239 @@
+<% include ../partials/header %>
+
+<!--COVER PHOTO AND TEXT-->
+<div async id="index-cover">
+    <img id="index-cover-photo" src="/images/index-cover.jpg" alt="index-cover photo" height="100%" width="100%"></img>
+    <div id="index-text">
+        <h1>Welcome to YelpCamp</h1>
+        <p>View or Share Campgrounds From Around The World</p>
+        <p>
+            <a id="addNewCampBtn" class="btn btn-primary btn-md" href="/campgrounds/new">Add New Campground</a>
+        </p>
+    </div>
+</div>
+
+<!--PUTS EVERYTHING UNDER THE COVER PHOTO IN A CONTAINER-->
+<div class="container">
+
+<div class="row">
+    <div class="col-sm-6 col-xs-12 topRated">
+        <h3 class="indexTopHeaders">Top Rated Campground</h3>
+        <div class="thumbnail campground-index">
+            <h3 class="indexTopName"><a href="/campgrounds/<%= topRatedCampground._id %>"><%= topRatedCampground.name %></a></h3>
+            <p>
+                <em>By: <%= topRatedCampground.author.username %></em>
+            </p>
+            <img src="<%= topRatedCampground.image %>">
+            <p>
+                <a id="topRatedBtn" class="btn btn-primary">View Other Top Rated Campgrounds<br><i class="fa fa-chevron-down" aria-hidden="true"></i></a>
+            </p>
+        </div>        
+    </div>
+    
+    <div class="col-sm-6 col-xs-12 mostRecent">
+        <h3 class="indexTopHeaders">Our Newest Campground</h3>
+        <div class="thumbnail campground-index">
+            <h3 class="indexTopName"><a href="/campgrounds/<%= mostRecentCampground._id %>"><%= mostRecentCampground.name %></a></h3>
+            <p>
+                <em>By: <%= mostRecentCampground.author.username %></em>
+            </p>
+            <img src="<%= mostRecentCampground.image %>">
+            <p>
+                <a id="mostRecentBtn" class="btn btn-primary">View Other Recently Added Campgrounds<br><i class="fa fa-chevron-down" aria-hidden="true"></i></a>
+            </p>
+        </div>        
+    </div>
+</div>
+
+<div id="campground-grid" class="row text-center flex-wrap"></div>
+
+<nav id="pagination" aria-label="Page navigation">
+  <ul class="pagination"></ul>
+</nav>
+
+
+<% include ../partials/footer %>
+<% include ../partials/scripts %>
+
+<script>
+$(function(){ // DOCUMENT READY OPENING TAGS
+
+// VIEW TOP RATED CAMPGROUNDS 
+  $("#topRatedBtn").on("click", function(){
+    loadResultsWithPageNumbers("ratings");
+    $(".topRated").removeClass("background1");
+    $(".topRated").addClass("background2");
+    $(".mostRecent").addClass("background1");
+    $(".mostRecent").removeClass("background2");
+  })
+
+// VIEW MOST RECENT CAMPGROUNDS 
+  $("#mostRecentBtn").on("click", function(){
+    loadResultsWithPageNumbers("recent");
+    $(".mostRecent").removeClass("background1");
+    $(".mostRecent").addClass("background2");
+    $(".topRated").addClass("background1");
+    $(".topRated").removeClass("background2");
+  })
+      
+// CLICKED ONE OF THE PAGINATION LI's
+  $(".pagination").on("click", "li", function(e){
+    e.stopPropagation();
+    loadNew(e);
+  })
+
+//=============================================================================//
+//=================================LOGIC=======================================//
+//=============================================================================//
+  let totalCampgrounds, totalPages, lastPageCampgrounds, sortedData;
+  let pageStartNum = 1;
+  let pageNumber = 1;
+  let perPage = 2;
+  let startNum = startNumFunc(pageNumber)
+
+// WHICH CAMPGROUNDS [] INDEX VALUE DO WE START AT
+  function startNumFunc(pageNumber){
+    return (((pageNumber-1)*perPage)+1)
+  };
+
+// LOAD DIFFERENT PAGE
+  function loadNew(e){
+    let idString = e.currentTarget.id;
+    let idNumber = Number(idString);
+    if(idString === "next" && pageNumber < totalPages){
+      pageNumber++;
+    }
+    else if(idString === "nextSet"){
+      pageStartNum+=3;
+      pageNumber = pageStartNum;
+    }
+    else if(idString === "previous" && pageNumber > 1){
+      if(pageNumber === pageStartNum){
+        pageStartNum-=3;
+      }
+      pageNumber--;
+    }
+    else if(idString === "previousSet"){
+      pageStartNum-=3;
+      pageNumber = pageStartNum;
+    }
+    else if(!Number.isNaN(idNumber) && idNumber !== pageNumber){
+      pageNumber = idNumber;
+    }
+    loadCampgroundsStartPoint()
+  }
+  
+// CHOOSES WHICH CAMPGROUNDS TO LOAD - BASED ON WHAT PAGE YOU'VE CLICKED
+  function loadCampgroundsStartPoint(){
+    startNum = startNumFunc(pageNumber);
+    if(pageNumber === totalPages){
+      showCampgrounds(startNum, lastPageCampgrounds);
+    } else {
+      showCampgrounds(startNum);
+    }
+  }
+
+// LOAD ALL CAMPGROUNDS
+  async function loadResultsWithPageNumbers(typeOfSort){
+    await APIcall(typeOfSort);
+    pageNumber = 1;
+    startNum = startNumFunc(pageNumber)
+    totalCampgrounds = sortedData.length - 1;
+    totalPages = Math.ceil(totalCampgrounds/perPage);
+    if(totalPages !== totalCampgrounds/perPage){
+      lastPageCampgrounds = totalCampgrounds-(perPage*(totalPages-1));
+    }
+    showCampgrounds(startNum)  
+  }
+
+// LOAD ALL CAMPGROUNDS - SORTED
+  async function APIcall(sortType){
+    let baseURL = "https://webdevbootcamp-dastrong.c9users.io/campgrounds/api/";
+    await $.get(baseURL+sortType, function(data){
+      return sortedData = data;
+    })
+  }
+  
+// EMPTIES AND PLACES CAMPGROUNDS ON THE INDEX PAGE
+  function showCampgrounds(startNum, length=perPage){
+    $('#campground-grid').html('');
+    for(let i = startNum; i < startNum+length; i++){
+      $('#campground-grid').append(`
+        <div class="col-md-3 col-sm-6">
+          <div class="thumbnail">
+            <img src="${ sortedData[i].image }">
+            <div class="caption">
+              <h4>${ sortedData[i].name }</h4>
+            </div>
+            <p>
+              <a href="/campgrounds/${ sortedData[i]._id }" class="btn btn-primary">More Info</a>
+            </p>
+          </div>
+        </div>
+      `);
+    }
+    if(totalPages === 1){
+      // REMOVES PAGINATION
+      $("#pagination").remove()
+    } else if(totalPages <= 4){
+      // ADD BASIC PAGINATION
+      $(".pagination").html('').append(paginationList);
+      addBasicLis(totalPages);
+    } else if(totalPages > 4){
+      // ADD ... TO PAGINATION
+      $(".pagination").html('').append(paginationList);
+      if(firstNumbers().includes(pageNumber)){
+        pageStartNum = pageNumber;
+      }
+      addLisToDOM(pageStartNum+Math.min(2,(totalPages-pageStartNum)), pageStartNum);
+    }
+  }
+
+// DETERMINES THE FIRST NUMBER USED ON EACH PAGINATION PAGE
+function firstNumbers(){
+  let arr = [];
+  for(let i = 1; i < totalPages; i+=3){
+    arr.push(i);
+  }
+  return arr;
+}
+
+// ADD BASIC NUMBERS LIS AND ... TO THE LIST
+  function addLisToDOM(pagesNum, page=1){
+    addBasicLis(pagesNum, page);
+    if(pageStartNum > 1){
+      $(".pagination li:nth-child(1)").after("<li id='previousSet'><a>"+'...'+"</a></li>");
+    } else if(pagesNum < totalPages){
+      $(".pagination li:last-child").before("<li id='nextSet'><a>"+'...'+"</a></li>");
+    }
+  }
+  
+// ADDS BASIC NUMBER LIS
+  function addBasicLis(pagesNum, page=1){
+    for(let i = page; i <= pagesNum; i++){
+      if(pageNumber === i){
+        $(`.pagination li:last-child`).before(`<li class="active" id="${i}"><a>${i}</a></li>`);
+      } else {
+        $(`.pagination li:last-child`).before(`<li id="${i}"><a>${i}</a></li>`);
+      }
+    }
+  }
+  
+// PREVIOUS AND NEXT ICON Li's
+  var paginationList = `
+    <li id="previous">
+      <a aria-label="Previous">
+        <span aria-hidden="true">&laquo;</span>
+      </a>
+    </li>
+    <li id="next">
+      <a aria-label="Next">
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+    </li>
+  `;
+}) // DOCUMENT READY CLOSING TAGS 
+
+</script>
+
+<% include ../partials/closingtags %>

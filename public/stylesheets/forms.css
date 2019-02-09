@@ -1,0 +1,12 @@
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    margin-top: 50px; 
+    margin-bottom: 60px;
+    background-image: url("/images/forms-background.jpg");
+    background-size: cover;
+    background-position: center;
+}

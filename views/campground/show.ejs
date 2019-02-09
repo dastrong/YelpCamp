@@ -1,0 +1,363 @@
+<% include ../partials/header %>
+
+<div class="row">
+  <div class="col-md-3">
+    <!--<p class="lead">YelpCamp</p>-->
+
+    <div class="row">    
+      <div class="col-md-12 col-sm-6">
+        <div class="panel panel-default">
+          <div class="panel-heading sideInfoHeader">
+            <h3 class="panel-title"><i class="fa fa-map" aria-hidden="true"></i> Find out where this is! <i class="fa fa-map-marker" aria-hidden="true"></i></h3>
+          </div>
+          <div class="panel-body sideInfoBody">
+            <div id="map"></div>
+            <div class="panel-footer sideInfoFooter"><i class="fa fa-chevron-up" aria-hidden="true"></i></div>
+          </div>
+        </div>
+      </div>
+        
+      <div class="col-md-12 col-sm-6">
+        <div class="panel panel-default">
+          <div class="panel-heading sideInfoHeader">
+            <h3 class="panel-title"><i class="fa fa-star" aria-hidden="true"></i> Leave a rating! <i class="fa fa-star-half-o" aria-hidden="true"></i></h3>
+          </div>
+          <div id="ratingForm" class="panel-body sideInfoBody">
+            <% if(currentUser && campground.userHasRated) { %>
+              <!--UPDATE RATING FORM -->
+              <form method="POST" action="/campgrounds/<%=campground._id%>/rating/<%=campground.currentUserRating._id%>?_method=PUT"/>
+                <input name="rating[rating]" class="rating rating-loading" value="<%= campground.currentUserRating.rating %>" data-step="1" data-size="xs">
+                <div class="form-group">
+                  <button id="ratingBtn" class="btn btn-block btn-primary btn-sm">
+                    Update Your Rating
+                  </button>
+                </div>
+              </form>
+            <% } else { %>
+              <!--NEW RATING FORM -->
+              <form method="POST" action="/campgrounds/<%=campground._id%>/rating"/>
+                <input name="rating[rating]" class="rating rating-loading" value="0" data-step="1" data-size="xs">
+                <div class="form-group">
+                  <button id="ratingBtn" class="btn btn-block btn-primary btn-sm">
+                    Submit a Rating
+                  </button>
+                </div>
+              </form>
+            <% } %>  
+            <div class="panel-footer sideInfoFooter"><i class="fa fa-chevron-up" aria-hidden="true"></i></div>
+          </div>
+        </div>
+      </div>
+       
+      <div class="col-md-12 col-sm-6">
+        <div class="panel panel-default">
+          <div class="panel-heading sideInfoHeader">
+            <h3 class="panel-title"><i class="fa fa-bolt" aria-hidden="true"></i> Check the forecast! <i class="fa fa-sun-o" aria-hidden="true"></i></h3>
+          </div>
+          <div class="panel-body sideInfoBody">
+            <div id="weatherWidget"></div>
+            <div class="panel-footer sideInfoFooter"><i class="fa fa-chevron-up" aria-hidden="true"></i></div>
+          </div>
+        </div>
+      </div>
+    </div>
+       
+        
+        
+        <!--<div class="list-group">-->
+        <!--    <li class="list-group-item active">Item 1</li>-->
+        <!--    <li class="list-group-item"> -->
+        <!--        <% if(!currentUser){ %>-->
+        <!--            <a href="/login">Sign in</a> to rate this campground-->
+        <!--        <% } else if(campground.currentUserRating){ %>-->
+        <!--            Your Rating: <%= campground.currentUserRating.rating %> -->
+        <!--        <% } else { %>-->
+        <!--            Rate this campground-->
+        <!--        <% } %>-->
+        <!--    </li>-->
+        <!--    <li class="list-group-item"></li>-->
+        <!--    <li class="list-group-item ratingForm">-->
+        <!--        <% if(currentUser && campground.userHasRated) { %>-->
+                     <!--UPDATE RATING FORM -->
+        <!--            <form method="POST" action="/campgrounds/<%=campground._id%>/rating/<%=campground.currentUserRating._id%>?_method=PUT"/>-->
+        <!--                <input name="rating[rating]" class="rating rating-loading" value="<%= campground.currentUserRating.rating %>" data-step="1" data-size="xs">-->
+        <!--                <div class="form-group">-->
+        <!--                    <button id="ratingBtn" class="btn btn-block btn-primary btn-sm">-->
+        <!--                        Update Your Rating-->
+        <!--                    </button>-->
+        <!--                </div>-->
+        <!--            </form>-->
+        <!--        <% } else { %>-->
+                     <!--NEW RATING FORM -->
+        <!--            <form method="POST" action="/campgrounds/<%=campground._id%>/rating"/>-->
+        <!--                <input name="rating[rating]" class="rating rating-loading" value="0" data-step="1" data-size="xs">-->
+        <!--                <div class="form-group">-->
+        <!--                    <button id="ratingBtn" class="btn btn-block btn-primary btn-sm">-->
+        <!--                        Submit a Rating-->
+        <!--                    </button>-->
+        <!--                </div>-->
+        <!--            </form>-->
+        <!--        <% } %>  -->
+        <!--    </li>-->
+        <!--</div>-->
+        
+        
+        <!--<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">-->
+        <!--  <div class="panel panel-default">-->
+        <!--    <div class="panel-heading" role="tab" id="headingOne">-->
+        <!--      <h4 class="panel-title">-->
+        <!--        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">-->
+        <!--          Rate This Campground-->
+        <!--        </a>-->
+        <!--      </h4>-->
+        <!--    </div>-->
+        <!--    <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">-->
+        <!--      <div class="panel-body ratingForm">-->
+        <!--      <% if(currentUser && campground.userHasRated) { %>-->
+                <!-- UPDATE RATING FORM -->
+        <!--        <form method="POST" action="/campgrounds/<%=campground._id%>/rating/<%=campground.currentUserRating._id%>?_method=PUT"/>-->
+        <!--          <input name="rating[rating]" class="rating rating-loading" value="<%= campground.currentUserRating.rating %>" data-step="1" data-size="xs">-->
+        <!--          <div class="form-group">-->
+        <!--            <button id="ratingBtn" class="btn btn-block btn-primary btn-sm">-->
+        <!--              Update Your Rating-->
+        <!--            </button>-->
+        <!--          </div>-->
+        <!--        </form>-->
+        <!--      <% } else { %>-->
+                <!-- NEW RATING FORM -->
+        <!--        <form method="POST" action="/campgrounds/<%=campground._id%>/rating"/>-->
+        <!--          <input name="rating[rating]" class="rating rating-loading" value="0" data-step="1" data-size="xs">-->
+        <!--          <div class="form-group">-->
+        <!--            <button id="ratingBtn" class="btn btn-block btn-primary btn-sm">-->
+        <!--              Submit a Rating-->
+        <!--            </button>-->
+        <!--          </div>-->
+        <!--        </form>-->
+        <!--      <% } %>  -->
+        <!--    </div>-->
+        <!--    </div>-->
+        <!--  </div>-->
+        <!--  <div class="panel panel-default">-->
+        <!--    <div class="panel-heading" role="tab" id="headingTwo">-->
+        <!--      <h4 class="panel-title">-->
+        <!--        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">-->
+        <!--          Weather Forecast-->
+        <!--        </a>-->
+        <!--      </h4>-->
+        <!--    </div>-->
+        <!--    <div id="collapseTwo" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingTwo">-->
+        <!--      <div class="panel-body" id="weatherWidget">-->
+        <!--      </div>-->
+        <!--    </div>-->
+        <!--  </div>-->
+        <!--  <div class="panel panel-default">-->
+        <!--    <div class="panel-heading" role="tab" id="headingThree">-->
+        <!--      <h4 class="panel-title">-->
+        <!--        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">-->
+        <!--          View Map-->
+        <!--        </a>-->
+        <!--      </h4>-->
+        <!--    </div>-->
+        <!--    <div id="collapseThree" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingThree">-->
+        <!--      <div class="panel-body" id="map">-->
+        <!--      </div>-->
+        <!--    </div>-->
+        <!--  </div>-->
+        <!--</div>-->
+        
+        
+        
+        <!--<div class="row">-->
+        <!--  <li></li>-->
+        <!--  <div class="col-md-12 col-sm-6">-->
+        <!--      <div id="weatherWidget"></div>-->
+        <!--  </div>-->
+        <!--  <div class="col-md-12 col-sm-6">-->
+        <!--      <div id="map"></div>-->
+        <!--  </div>-->
+        <!--</div>-->
+        
+    </div>
+    
+    <div class="col-md-9">
+        <div class="thumbnail">
+            <img class="img-responsive" src="<%= campground.image %>">
+            <input type="number" class="rating" data-step=0.5 value="<%= campground.rating %>" data-display-only="true" data-size="sm">
+            <div class="caption-full">
+                <h4 class="pull-right">$<%= campground.price %>/night</h4>
+                <h4><a><%= campground.name %></a></h4>
+                <p><%= campground.description %></p>
+                <p>
+                    <em>Submitted By: <%= campground.author.username %></em>, <%= moment(campground.createdAt).fromNow() %>
+                </p>
+                
+                <% if(currentUser && campground.author.id.equals(currentUser._id)){ %>
+                    <a href="/campgrounds/<%= campground._id %>/edit" class="btn btn-warning">Edit</a>
+                    <form class="delete-form" action="/campgrounds/<%= campground._id %>?_method=DELETE" method="POST">
+                        <button class="btn btn-danger">Delete</button>
+                    </form>
+                <% } %>
+            </div>
+        </div>
+        
+        <div class="well">
+            <h3 id="commentsHeader"><i class="fa fa-comments" aria-hidden="true"></i> Comments</h3>
+            <% if(currentUser){ %>
+                <form action="/campgrounds/<%= campground._id %>/comments" method="POST">
+                    <div class="input-group">
+                        <input type="text" class="form-control" name="comment[text]" placeholder="...add a comment here...">
+                        <span class="input-group-btn">
+                            <button class="btn btn-success">Submit!</button>
+                        </span>
+                    </div>
+                </form>
+            <% } else { %>
+                <div class="text-right">
+                    <a class="btn btn-success" href="/campgrounds/<%= campground._id %>/comments/new">Add New Comment</a>
+                </div>
+            <% } %>
+            <hr>
+            <% campground.comments.forEach(function(comment){ %>
+                <div class="row" id="comment_box">
+                    <div class="col-md-12">
+                        <strong><%= comment.author.username %></strong>
+                        <span class="pull-right"><%= moment(comment.createdAt).fromNow() %></span>
+                        <p>
+                            <%= comment.text %>
+                        </p>
+                        <% if(currentUser && comment.author.id.equals(currentUser.id)) { %>
+                            <a href="/campgrounds/<%= campground._id %>/comments/<%= comment._id %>/edit" class="btn btn-warning">Edit</a>
+                            <form class="delete-form" action="/campgrounds/<%= campground._id %>/comments/<%= comment._id %>?_method=DELETE" method="POST">
+                                <button class="btn btn-danger">Delete</button>
+                            </form>
+                        <% } %>
+                    </div>
+                </div>
+            <% }); %>
+        </div>
+    </div>
+</div>
+
+<% include ../partials/footer %>
+<% include ../partials/scripts %>
+
+<!--GOOGLE MAPS-->
+<script>
+      function initMap() {
+        var lat = <%= campground.lat %>;
+        var lng = <%= campground.lng %>;
+        var center = {lat:lat, lng:lng};
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 8,
+          center: center,
+          scrollwheel: false
+        });
+        var contentString = `
+                <strong><%= campground.name %><br />
+                <%= campground.location %></strong><br />
+                <p><%= campground.description %></p>
+            `
+        var infowindow = new google.maps.InfoWindow({
+          content: contentString
+        });
+        var marker = new google.maps.Marker({
+          position: center,
+          map: map
+        });
+        marker.addListener('click', function() {
+          infowindow.open(map, marker);
+        });
+      }
+</script>
+<script async defer
+    src="https://maps.googleapis.com/maps/api/js?key="+process.env.MAPS_KEY+"&callback=initMap">
+</script>
+
+<!--WEATHER-->
+<script>
+  $(function(){
+// OPENS AND CLOSES PANEL
+    $(".sideInfoHeader").on("click", function(){
+      $(this.parentNode).toggleClass("panel-primary", "panel-default");
+      $(this.nextElementSibling).toggle("fast")
+    })
+// CLOSES PANEL
+    $(".sideInfoFooter").on("click", function(e){
+      $(this).closest(".panel").toggleClass("panel-primary", "panel-default");
+      $(this).closest(".panel-body").toggle("fast")
+    })
+    $("#weatherWidget").append(`
+      <div id="currentInfo"></div>
+      <div id="forecastInfo"></div>
+    `);
+// GET CURRENT WEATHER
+    $.getJSON("https://api.openweathermap.org/data/2.5/weather?lat=<%= campground.lat %>&lon=<%= campground.lng %>&appid="+process.env.WEATHER_KEY)
+    .then(function(data){
+      $('#currentInfo').append(`
+        <h1>${data.name}</h1>
+        <i class="wi wi-owm-${data.weather[0].id}"></i>
+        <h4>${(data.main.temp  - 273.15).toFixed(0)}&deg;</h4>
+      `)
+    })
+    .catch(function(err){
+      console.log(err)
+    })
+// GET WEATHER FORECAST (4 DAYS)
+    $.getJSON("https://api.openweathermap.org/data/2.5/forecast?lat=<%= campground.lat %>&lon=<%= campground.lng %>&appid="+process.env.WEATHER_KEY)
+    .then(function(data){
+        let days = [[],[],[],[],[],[]];
+        let currentDay = data.list[0].dt_txt.slice(0,10)
+        let y = 0;
+        for(let i = 0; i < data.list.length; i++){
+        	let value = data.list[i];
+        	if(!value.dt_txt.includes(currentDay)){
+        		y++;
+        		currentDay = value.dt_txt.slice(0,10)
+        	}
+        	days[y].push(value);
+        }
+        let nextFourDays = days.slice(1,5)
+        let nextFourDayData = [[],[],[],[]]
+        for(let i = 0; i < nextFourDays.length; i++){
+            let tempArr = [];
+            let idArr = [];
+            nextFourDays[i].forEach(function(day){
+                tempArr.push(day.main.temp);
+                idArr.push(day.weather[0].id)
+            })
+            let idObj = idArr.reduce((a,b)=>{a[b] ? a[b]++ : a[b] = 1; return a},{})
+            nextFourDayData[i].maxTemp = Math.max(...tempArr);
+            nextFourDayData[i].minTemp = Math.min(...tempArr);
+            nextFourDayData[i].day = new Date(nextFourDays[i][0].dt_txt).toDateString().slice(0,3);
+            nextFourDayData[i].id = getKeyByValue(idObj);
+        }
+        data = nextFourDayData;
+        for(let i = 0; i < data.length; i++){
+          $("#forecastInfo").append(`
+            <div class="forecastDay">
+             <div class="day">
+              <p>${data[i].day}</p>
+             </div>
+             <div class="icon">
+               <i class="wi wi-owm-${data[i].id}"></i>
+             </div>
+             <div class="temp">
+              <p class="highTemp">${(data[i].maxTemp - 273.15).toFixed(0)}&deg;</p>
+              <p class="lowTemp">${(data[i].minTemp - 273.15).toFixed(0)}&deg;</p>
+             </div>  
+            </div>
+          `)
+        }
+    })
+    .catch(function(err){
+        console.log(err)
+    })
+  })
+    
+function getKeyByValue(obj){
+	return Object.keys(obj).reduce((a, b) => obj[a] > obj[b] ? a : b);
+}
+
+</script>
+
+<% include ../partials/closingtags %>
